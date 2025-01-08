@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quazal;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -10,7 +11,7 @@ namespace RB2RPSRV
         public static readonly object _sync = new object();
         public static bool _exit = false;
         private static UdpClient listener;
-        private static ushort listenPort = 30641;
+        private static ushort listenPort = 30826;
 
 
 
@@ -34,9 +35,9 @@ namespace RB2RPSRV
 
         public static void kMainThread(object obj)
         {
-            Console.WriteLine("[RB2RPSRV] Secure Server Started on " + IPAddress.Any + ":" + listenPort);
+            Logger.Info("[RB2RPSRV] [SECURE] Started on " + IPAddress.Loopback + ":" + listenPort);
             listener = new UdpClient(listenPort);
-            IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Loopback, 0);
             while (true) 
             {
                 lock (_sync)
@@ -47,18 +48,43 @@ namespace RB2RPSRV
                 try
                 {
                     byte[] bytes = listener.Receive(ref ep);
+                    ProcessPacket(bytes, ep);
                 }
                 catch(Exception e)
                 {
                     Console.WriteLine(e.Message);
                 } 
             }
-            Console.WriteLine("[RB2RPSRV] Auth Server Stopped");
+            Logger.Info("[RB2RPSRV] [SECURE] Server Stopped");
         }
 
         public static void ProcessPacket(byte[] data, IPEndPoint ep)
         {
-            Console.WriteLine("[RB2RPSRV] <> Not Implemented...");
+            QPacket p = new QPacket(data);
+
+            switch (p.type)
+            {
+                case QPacket.PACKETTYPE.SYN:
+                    // Implement SYN
+                    Logger.Warning("[RB2RPSRV] [SECURE] SYN Packet Type Not Implemeneted");
+                    break;
+                case QPacket.PACKETTYPE.CONNECT:
+                    // Implement CONNECT
+                    Logger.Warning("[RB2RPSRV] [SECURE] CONNECT Packet Type Not Implemeneted");
+                    break;
+                case QPacket.PACKETTYPE.DATA:
+                    // Implement DATA
+                    Logger.Warning("[RB2RPSRV] [SECURE] DATA Packet Type Not Implemeneted");
+                    break;
+                case QPacket.PACKETTYPE.DISCONNECT:
+                    // Implement DISCONNECT
+                    Logger.Warning("[RB2RPSRV] [SECURE] DISCONNECT Packet Type Not Implemeneted");
+                    break;
+                case QPacket.PACKETTYPE.PING:
+                    // Implement PING
+                    Logger.Warning("[RB2RPSRV] [SECURE] PING Packet Type Not Implemeneted");
+                    break;
+            }
         }
     }
 }

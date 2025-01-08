@@ -13,8 +13,8 @@ namespace Quazal
             if (client == null)
                 return;
             client.sessionID = p.m_bySessionID;
-            if (p.uiSeqId > client.sequenceCounter)
-                client.sequenceCounter = p.uiSeqId;
+            if (p.uiSeqId > client.sequenceIDIn)
+                client.sequenceIDIn = p.uiSeqId;
             client.udp = udp;
             if (p.flags.Contains(QPacket.PACKETFLAG.FLAG_ACK))
                 return;

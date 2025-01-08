@@ -11,7 +11,7 @@ namespace Quazal
     public static class Server
     {
         public static readonly string key = "CD&ML"; // Quazal Encryption & Decryption key
-        public static readonly string accessKey = ""; // (TODO) Use the access key from the config file
+        public static readonly string accessKey = "Ey6Ma18"; // (TODO) Use the access key from the config file
         public static string serverAddress = "127.0.0.1"; // Bind the server to this specific address
         public static uint idCounter = 0x12345678; // Not sure
         public static uint pidCounter = 0x1F4; // Not sure

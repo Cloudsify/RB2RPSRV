@@ -13,9 +13,11 @@ namespace Quazal
         public string Username; // Platform Username
         public uint PID; // PlayerID
         public uint Port;
+        public static uint signatureBase;
         public byte sessionID;
         public byte[] sessionKey;
-        public ushort sequenceCounter; // How many packets have go in and out
+        public ushort sequenceIDIn; // How many packets have go in
+        public ushort sequenceIDOut; // How many packets have gone out
         public ushort seqCounterReliable = 1;
 
         public uint callCounterRMC;
@@ -27,6 +29,22 @@ namespace Quazal
 
         public uint sPID; // Server PID
         public ushort sPort; // Server Port      
-    }
 
+        public static void reset()
+        {
+            byte[] accessKeyBytes = Encoding.UTF8.GetBytes(Server.accessKey);
+            signatureBase = Sum(accessKeyBytes);
+        }
+
+        public static uint Sum(byte[] slice)
+        {
+            uint total = 0;
+            foreach (byte value in slice)
+            {
+                total += value;
+            }
+            return total;
+        }
+
+    }
 }
