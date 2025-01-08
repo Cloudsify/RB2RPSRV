@@ -30,6 +30,13 @@ namespace Quazal
         public uint sPID; // Server PID
         public ushort sPort; // Server Port      
 
+        public Client(IPEndPoint ep, uint IDrecv, uint PID)
+        {
+            this.ep = ep;
+            this.IDrecv = IDrecv;
+            this.PID = PID;
+        }
+
         public static void reset()
         {
             byte[] accessKeyBytes = Encoding.UTF8.GetBytes(Server.accessKey);

@@ -72,7 +72,7 @@ namespace RB2RPSRV
                     break;
                 case QPacket.PACKETTYPE.CONNECT:
                     Logger.Warning("[RB2RPSRV] [AUTH] CONNECT Packet Type Called");
-                    QPacketHandler.ProcessPacket("AuthServer", data, ep, listener, 0, 0, true);
+                    QPacketHandler.ProcessPacket("AuthServer", data, ep, listener, 0, 0, false);
                     break;
                 case QPacket.PACKETTYPE.DATA:
                     Logger.Warning("[RB2RPSRV] [AUTH] DATA Packet Type Called");

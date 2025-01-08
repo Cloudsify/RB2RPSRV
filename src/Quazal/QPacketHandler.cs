@@ -12,10 +12,7 @@ namespace Quazal
             client = Server.GetClientByEndPoint(ep);
             if (client == null)
             {
-              client = new Client();
-              client.ep = ep;
-              client.IDrecv = Server.idCounter++;
-              client.PID = Server.pidCounter++; // Change this to get the client username and PID from the database
+              client = new Client(ep, Server.idCounter++, Server.pidCounter++);
               Server.clients.Add(client);
             }
             QPacket reply = new QPacket();
@@ -43,10 +40,10 @@ namespace Quazal
             reply.m_uiSignature = p.m_uiSignature;
             reply.uiSeqId = p.uiSeqId;
             reply.m_uiConnectionSignature = client.IDsend;
-            if (p.payload != null && p.payload.Length > 0)
-              reply.payload = MakeConnectPayload(client,p);
-            else
-              reply.payload = new byte[0];
+            //if (p.payload != null && p.payload.Length > 0)
+            reply.payload = MakeConnectPayload(client,p);
+            //else
+              //reply.payload = new byte[0];
             return reply; 
           }
 
@@ -56,6 +53,7 @@ namespace Quazal
             uint size = DataWriter.ReadUint32(m);
             byte[] buff = new byte[size];
             m.Read(buff, 0, (int)size);
+            size = DataWriter.ReadUint32(m) - 16;
             buff = new byte[size];
             m.Read(buff, 0, (int)size);
             buff = DataWriter.Decrypt(client.sessionKey, buff);
@@ -116,7 +114,7 @@ namespace Quazal
 
               if(p.type != QPacket.PACKETTYPE.SYN && p.type != QPacket.PACKETTYPE.NATPING)
               {
-                client = Server.GetClientByIDrecv(p.m_uiSignature);
+                client = Server.GetClientByEndPoint(ep);
               }
 
               switch (p.type)
@@ -135,7 +133,12 @@ namespace Quazal
                                   p.payloadSize = 0;
                               }
                               reply = QPacketHandler.ProcessCONNECT(client, p);
+                              Logger.Debug("Replying to CONNECT packet");
                           }
+                    else
+                    {
+                      Logger.Error("[PACKET-TYPE::CONNECT] Client is null or flag contains FLAG_ACK");
+                    }
                     break;
                 case QPacket.PACKETTYPE.DISCONNECT:
                     if (client != null)

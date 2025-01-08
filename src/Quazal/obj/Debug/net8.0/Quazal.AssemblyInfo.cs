@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Quazal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b33607b4afabcb35f85477f8d2b4a9167da48042")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f3c45a503752989fb838b2582909a1dbae8182f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Quazal")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Quazal")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
