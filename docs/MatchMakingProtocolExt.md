@@ -1,4 +1,4 @@
-## [NEX-Protocols](https://github.com/kinnay/NintendoClients/wiki/NEX-Protocols) > MatchMakingProtocolExt (Unknown ID)
+## [NEX-Protocols](https://github.com/kinnay/NintendoClients/wiki/NEX-Protocols) > MatchMakingProtocolExt (110)
 
 | Method ID | Method Name |
 | --- | --- |
