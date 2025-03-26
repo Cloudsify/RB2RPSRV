@@ -40,20 +40,24 @@ namespace Quazal
             reply.m_uiSignature = p.m_uiSignature;
             reply.uiSeqId = p.uiSeqId;
             reply.m_uiConnectionSignature = client.IDsend;
-            //if (p.payload != null && p.payload.Length > 0)
-            reply.payload = MakeConnectPayload(client,p);
-            //else
-              //reply.payload = new byte[0];
+            reply.payload = new byte[0];
             return reply; 
           }
 
           public static byte[] MakeConnectPayload(Client client, QPacket p)
           {
             MemoryStream m = new MemoryStream(p.payload);
-            uint size = DataWriter.ReadUint32(m);
+            Logger.Debug("Attempting to read size.");
+            uint size = DataWriter.ReadUint16(m);
+            if (size > m.Length)
+            {
+                Logger.Error($"Invalid buffer size: {size} compared to {m.Length}");
+                return new byte[0];
+            }
             byte[] buff = new byte[size];
             m.Read(buff, 0, (int)size);
             size = DataWriter.ReadUint32(m) - 16;
+            Logger.Debug("Attempting to read buff.");
             buff = new byte[size];
             m.Read(buff, 0, (int)size);
             buff = DataWriter.Decrypt(client.sessionKey, buff);

@@ -7,6 +7,7 @@ namespace RB2RPSRV
         [STAThread]
         static void Main()
         {
+            Quazal.Program.getVersion();
             AuthServer.Start();
             SecureServer.Start();
         }

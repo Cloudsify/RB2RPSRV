@@ -97,10 +97,10 @@ namespace Quazal
             flags = new List<PACKETFLAG>();
             ExtractFlags();
             m_bySessionID = DataWriter.ReadUint8(m);
-            m_uiSignature = DataWriter.ReadUint32(m);
             uiSeqId = DataWriter.ReadUint16(m);
+            m_uiConnectionSignature = DataWriter.ReadUint32(m);
             if (type == PACKETTYPE.SYN || type == PACKETTYPE.CONNECT)
-                m_uiConnectionSignature = DataWriter.ReadUint32(m);
+                m_uiSignature = DataWriter.ReadUint32(m);
             if (type == PACKETTYPE.DATA)
                 m_byPartNumber = DataWriter.ReadUint8(m);
             if (flags.Contains(PACKETFLAG.FLAG_HAS_SIZE))
@@ -149,7 +149,7 @@ namespace Quazal
             DataWriter.WriteUint16(m, uiSeqId);
             if (type == PACKETTYPE.SYN || type == PACKETTYPE.CONNECT)
                 DataWriter.WriteUint32(m, m_uiConnectionSignature);
-            if(type == PACKETTYPE.DATA)
+            if (type == PACKETTYPE.DATA)
                 DataWriter.WriteUint8(m, m_byPartNumber);
             byte[] tmpPayload = payload;
             if (tmpPayload != null && tmpPayload.Length > 0 && type != PACKETTYPE.SYN && m_oSourceVPort.type != STREAMTYPE.NAT)
@@ -229,7 +229,7 @@ namespace Quazal
             checksum += Client.Sum(data.Skip(data.Length & ~3).ToArray());
             checksum += Client.Sum(buff);
 
-            return (byte) (checksum & 0xFF);
+            return (byte)(checksum & 0xFF);
         }
 
 

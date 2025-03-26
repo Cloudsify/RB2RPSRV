@@ -26,3 +26,4 @@ go.work.sum
 /src/Quazal/obj
 /src/Quazal/bin
 /src/Quazal/obj
+/src/Quazal/.vs
