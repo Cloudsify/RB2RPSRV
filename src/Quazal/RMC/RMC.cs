@@ -7,22 +7,27 @@ namespace Quazal
     public static class RMC
     {
         public const uint MaxRMCPayloadSize = 963;
-        public static void HandlePacket(UdpClient udp, QPacket p)
+        public static void HandlePacket(UdpClient udp, IPEndPoint ep, QPacket p)
         {
-            Client client = Server.GetClientByIDrecv(p.m_uiSignature);
-            if (client == null)
+            Client client = Server.GetClientByEndPoint(ep);
+            if (client == null) {
                 return;
+            }
             client.sessionID = p.m_bySessionID;
             if (p.uiSeqId > client.sequenceIDIn)
                 client.sequenceIDIn = p.uiSeqId;
             client.udp = udp;
             if (p.flags.Contains(QPacket.PACKETFLAG.FLAG_ACK))
                 return;
-            RMCP rmc = new RMCP();
+            RMCP rmc = new RMCP(p);
             if (rmc.isRequest)
+            {
                 HandleRequest(client, p, rmc);
+            }
             else
+            {
                 HandleResponse(client, p, rmc);
+            }
         }
 
         public static void HandleResponse(Client client, QPacket p, RMCP rmc)
@@ -51,6 +56,7 @@ namespace Quazal
 
         public static void HandleRequest(Client client, QPacket p, RMCP rmc)
         {
+            Logger.Debug("Handling request");
             ProcessRequest(client, p, rmc);
 
             if (rmc.callID > client.callCounterRMC)
@@ -59,6 +65,7 @@ namespace Quazal
             switch (rmc.proto)
             {
                 case RMCP.PROTOCOL.AuthenticationService:
+                    Logger.Debug("Executing Authentication Service");
                     AuthenticationService.HandleAuthenticationServiceRequest(p, rmc, client);
                     break;
                 default:
